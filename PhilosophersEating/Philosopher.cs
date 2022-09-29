@@ -1,57 +1,45 @@
-﻿using System;
+﻿using MyApp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using static MyApp.Program;
 
 namespace PhilosophersEating
 {
     internal class Philosopher
     {
-        Fork LeftFork;
-        Fork RightFork;
-        string Name;
+        public Fork LeftFork;
+        public Fork RightFork;
+        public string Name;
 
-        public Philosopher(Fork LeftFork, Fork RightFork, string Name)
+        Random random;
+        ForkProviderMethod GetBothForks;
+
+        public Philosopher(ForkProviderMethod ForkProvider, Fork LeftFork, Fork RightFork, string Name)
         {
             this.LeftFork = LeftFork;
             this.RightFork = RightFork;
             this.Name = Name;
+            this.GetBothForks = ForkProvider;
+            random = new Random();
         }
         public void EatAMeal()
         {
             while (true)
             {
-                // If right fork is free
-                if (RightFork.p == null)
-                {
-                    // Say(Name + " takes first fork");
-                    RightFork.p = this;
-                    // wait until left fork is free
-                    Say(Name + " Waits for second fork to become available");
-                    do
-                    { /* Wait for fork to become free */ }
-                    while (LeftFork.p != null);
-                    // Say(Name + " takes right left");
-                    LeftFork.p = this;
+                Say(Name + " Attempting to take two forks");
+                GetBothForks(this);
 
-                    // Sleep (eat) for 3 seconds
-                    // Tråd skal sove i 3 sekunder
-                    // Say(Name + " eats for 0.2 seconds");
-                    Thread.Sleep(10);
+                // Tråd skal sove; svarer til at filosoffen spiser et stykke tid
+                Thread.Sleep(random.Next(30)+10);
 
-                    // let go of right fork
-                    RightFork.p = null;
-                    // Say(Name + " drops right fork");
-                    // let go of left fork
-                    LeftFork.p = null;
-                    // Say(Name + " drops left fork");
-                    // Sleep (digest) 3 seconds
-                    // Tråd skal sove i 3 sekunder
-                    // Say(Thread.CurrentThread.Name + " eats for 3 seconds");
-                    // Thread.Sleep(3000);
-                }
+                // Finished eating, letting go of both forks
+                LeftFork.p = null;
+                RightFork.p = null;
+                Say(Name + " dropped both forks");
             }
         }
 
