@@ -15,13 +15,7 @@ namespace PhilosophersEating
         private static Helper instance;  // Singleton instance
 
         private Helper()  // Singleton private constructor
-        {
-            if (instance == null)
-            {
-                rootObject = new Object();
-                instance = new Helper();
-            }
-        }
+        { }
 
         public static Helper getInstance() // getting singleton instance
         {
