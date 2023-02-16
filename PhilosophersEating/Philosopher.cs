@@ -28,8 +28,6 @@ namespace PhilosophersEating
         }
         public void EatAMeal()
         {
-            while (true)
-            {
                 Say(Name + " Attempting to take two forks");
                 GetBothForks(this);
 
@@ -40,7 +38,6 @@ namespace PhilosophersEating
                 LeftFork.p = null;
                 RightFork.p = null;
                 Say(Name + " dropped both forks");
-            }
         }
 
         private void Say(String s)
